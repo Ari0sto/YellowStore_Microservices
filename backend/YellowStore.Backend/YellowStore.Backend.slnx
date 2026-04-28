@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="../BasketService/BasketService.csproj" Id="d232c8e9-e244-497c-9729-7cc48b0850fc" />
   <Project Path="../CatalogService/CatalogService.csproj" Id="44cb5c42-0d24-4acc-bf34-4e082714dd6e" />
   <Project Path="../InventoryService/InventoryService.csproj" Id="b2d368d9-acdf-49ef-b78f-bf9998b6c390" />
   <Project Path="IdentityService/IdentityService.csproj" />
