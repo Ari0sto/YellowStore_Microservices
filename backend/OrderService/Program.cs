@@ -31,4 +31,18 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// Автоматическое применение миграций при старте
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
+    try
+    {
+        dbContext.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Ошибка миграции: {ex.Message}");
+    }
+}
+
 app.Run();

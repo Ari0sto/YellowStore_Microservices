@@ -71,19 +71,24 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Инициализация базы данных и ролей
+// Применение миграций и инициализация БД
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+
     try
     {
+        // 1. Сначала применяем миграции (создаем/обновляем таблицы)
+        var dbContext = services.GetRequiredService<AppDbContext>();
+        dbContext.Database.Migrate();
+
+        // 2. Только после того как таблицы созданы, добавляем роли и админа
         await DbInitializer.SeedAsync(services);
     }
-
     catch (Exception ex)
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Ошибка при инициализации БД (seeding)");
+        logger.LogError(ex, "Ошибка при миграции или инициализации БД (seeding)");
     }
 }
 

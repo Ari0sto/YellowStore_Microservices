@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+  identityservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "7001:8080" # Внешний порт : Внутренний порт контейнера
+
+  catalogservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "7002:8080"
+
+  inventoryservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "7003:8080"
+
+  basketservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "7004:8080"
+
+  orderservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "7005:8080"

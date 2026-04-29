@@ -1,0 +1,56 @@
+version: '3.4'
+
+services:
+  sql.data:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Your_Strong_Password123!
+    ports:
+      - "1433:1433"
+
+  yellow-redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  identityservice:
+    image: ${DOCKER_REGISTRY-}identityservice
+    build:
+      context: .
+      dockerfile: IdentityService/Dockerfile
+    depends_on:
+      - sql.data
+
+  catalogservice:
+    image: ${DOCKER_REGISTRY-}catalogservice
+    build:
+      context: ../
+      dockerfile: CatalogService/Dockerfile    
+    depends_on:
+      - sql.data
+
+  inventoryservice:
+    image: ${DOCKER_REGISTRY-}inventoryservice
+    build:
+      context: ../
+      dockerfile: InventoryService/Dockerfile  
+    depends_on:
+      - sql.data
+
+  basketservice:
+    image: ${DOCKER_REGISTRY-}basketservice
+    build:
+      context: ../
+      dockerfile: BasketService/Dockerfile    
+    depends_on:
+      - yellow-redis
+
+  orderservice:
+    image: ${DOCKER_REGISTRY-}orderservice
+    build:
+      context: ../
+      dockerfile: OrderService/Dockerfile      
+    depends_on:
+      - sql.data
+      - yellow-redis
