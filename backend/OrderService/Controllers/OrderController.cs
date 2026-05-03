@@ -2,6 +2,7 @@
 using OrderService.Data;
 using OrderService.Models;
 using OrderService.DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace OrderService.Controllers
 {
@@ -56,6 +57,7 @@ namespace OrderService.Controllers
                 newOrder.Items.Add(new OrderItem
                 {
                     ProductId = item.ProductId,
+                    ProductName = product.Name,
                     Quantity = item.Quantity,
                     Price = product.Price
                 });
@@ -86,6 +88,19 @@ namespace OrderService.Controllers
             await client.DeleteAsync($"{basketUrl}/api/basket/{userId}");
 
             return Ok(new { Message = "Заказ успешно оформлен!", OrderId = newOrder.Id });
+        }
+
+        [HttpGet("my-orders/{userId}")]
+        public async Task<IActionResult> GetMyOrders(string userId)
+        {
+            // Ищем в БД все заказы конкретного пользователя
+            // .Include(o => o.Items) нужен, чтобы EF Core "подтянул" связанные товары из другой таблицы
+            var orders = await _context.Orders
+                .Include(o => o.Items)
+                .Where(o => o.UserId == userId)
+                .ToListAsync();
+
+            return Ok(orders);
         }
     }
 }

@@ -6,6 +6,8 @@ interface HeaderProps {
     onLoginClick: () => void;
     onLogoutClick: () => void;
     onCartClick: () => void;
+    onRegisterClick: () => void;
+    onMyOrdersClick: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ 
@@ -14,7 +16,9 @@ export const Header: React.FC<HeaderProps> = ({
     username, 
     onLoginClick, 
     onLogoutClick, 
-    onCartClick 
+    onCartClick,
+    onRegisterClick,
+    onMyOrdersClick
 }) => {
     
     return (
@@ -38,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({
                                 <span style={{ color: 'white', marginRight: '10px' }}>
                                     Привет, {username}!
                                 </span>
-                                <button className="btn-login" style={{ background: '#2196F3', marginRight: '5px' }}>
+                                <button className="btn-login" onClick={onMyOrdersClick} style={{ background: '#2196F3', marginRight: '5px' }}>
                                     Мои заказы
                                 </button>
                                 <button className="btn-login" onClick={onLogoutClick}>
@@ -51,7 +55,7 @@ export const Header: React.FC<HeaderProps> = ({
                                 <button className="btn-login" onClick={onLoginClick}>
                                     Войти
                                 </button>
-                                <button className="btn-login" style={{ background: '#00a046', marginLeft: '5px' }}>
+                                <button className="btn-login" style={{ background: '#00a046', marginLeft: '5px' }} onClick={onRegisterClick}>
                                     Регистрация
                                 </button>
                             </>
